@@ -1,20 +1,23 @@
 pipeline {
-  agent any
-  stages {
-    stage ('Setup') {
-      step {
-        echo '** Setup Stage **'
-      }
+    agent any
+    tools {
+        maven 'M3'
     }
-    stage ('Build') {
-      step {
-        echo '** Build Stage **'
-      }
+    stages {
+        stage("Checkout") {
+            steps {
+                git branch: 'main', url: 'https://github.com/NickBaynham/pipeline-example.git'
+            }
+        }
+        stage("Build") {
+            steps {
+                sh "mvn compile"
+            }
+        }
+        stage("Test") {
+            steps {
+                sh "mvn test"
+            }
+        }
     }
-    stage ('Test') {
-      step {
-        echo '** Test Stage **'
-      }
-    }
-  }
 }
